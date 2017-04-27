@@ -201,12 +201,12 @@ InstanceID SessionAwareConsistentHashing::mapPacketToInstance(Packet &p) {
 	} else {
 		assert(!buckets.empty());
 		id = buckets[hash_value(key) % buckets.size()];
-		cout	// DBG
+		/*cout	// DBG
 				<< "New instance assignment: "
 				<< "key=(" << key.srcIp << ":" << key.srcPort << "->" << key.destIp << ":" << key.destPort << ") " 
 				<< "hash=" << hash_value(key) << " "
 				<< "bucketSize=" << buckets.size() << " "
-				<< "tags=(" << id.inboundTag << "," << id.outboundTag << ")" << endl;
+				<< "tags=(" << id.inboundTag << "," << id.outboundTag << ")" << endl;*/
 		// create session and set instance id
 		//sesManager.createOrRefreshSession(key, p.timestamp);
                 sesManager.createOrRefreshSession(key, now);
@@ -563,7 +563,7 @@ tag_t LoadBalancer::packetToInstance(Packet &p) {
 		: 
 			(p.inbound ? p.existingTag : id.outboundTag);
 		
-	cout <<	// DBG
+	/*cout <<	// DBG
 			(isMaster ? "Master" : "Slave") << 
 			" packet:" << 
 			p.socket.srcIp << ":" << 
@@ -571,7 +571,7 @@ tag_t LoadBalancer::packetToInstance(Packet &p) {
 			p.socket.destIp << ":" <<
 			p.socket.destPort << "@" <<
 			(p.inbound ? "inbound" : "outbound") << "#Tag:" <<
-			tag << endl;
+			tag << endl;*/
 	
 	return tag;
 }
