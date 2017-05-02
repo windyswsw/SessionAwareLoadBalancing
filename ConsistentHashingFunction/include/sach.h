@@ -104,7 +104,8 @@ private:
 	SessionMap sessions;
 public:
 	SessionManager() :
-			sessionTau(180000) {
+			//sessionTau(180000) {
+                        sessionTau(5000) {
 	}
 	/// returns true iff a new session is created.
 	/// this method will update the session timestamp to be "ts"
@@ -251,6 +252,10 @@ private:
 public:
 	LoadBalancer(std::string cPort, std::string sIp, std::string sPort);
 	LoadBalancer(std::string sPort);
+
+        //WR LB
+        LoadBalancer(std::string cPort, std::string sIp, std::string sPort, timestamp_t tauNew);
+        LoadBalancer(std::string sPort, timestamp_t tauNew);
 
 	tag_t packetToInstance(Packet &p);
 	void addInstance(InstanceID &inst);
