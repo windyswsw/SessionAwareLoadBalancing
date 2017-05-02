@@ -206,7 +206,7 @@ InstanceID SessionAwareConsistentHashing::mapPacketToInstance(Packet &p) {
 				<< "key=(" << key.srcIp << ":" << key.srcPort << "->" << key.destIp << ":" << key.destPort << ") " 
 				<< "hash=" << hash_value(key) << " "
 				<< "bucketSize=" << buckets.size() << " "
-				<< "tags=(" << id.inboundTag << "," << id.outboundTag << ")" << endl;*/
+				<< "tags=(" << id.inboundTag << "," << id.outboundTag << ")" << endl; */
 		// create session and set instance id
 		//sesManager.createOrRefreshSession(key, p.timestamp);
                 sesManager.createOrRefreshSession(key, now);
@@ -218,8 +218,8 @@ InstanceID SessionAwareConsistentHashing::mapPacketToInstance(Packet &p) {
 
 LoadBalancer::LoadBalancer(std::string cPort, std::string sIp,
 		std::string sPort) :
-		isMaster(true), controlPort(cPort), slaveIp(sIp), slavePort(sPort), sesManager(), loadMonitor(), hashing(
-				sesManager) {
+		 isMaster(true), controlPort(cPort), slaveIp(sIp), slavePort(sPort), sesManager(), loadMonitor(), hashing(
+		sesManager) {
 	ctlTh = boost::thread(&LoadBalancer::runCtlServer, this);
 }
 LoadBalancer::LoadBalancer(std::string sPort) :
@@ -227,6 +227,25 @@ LoadBalancer::LoadBalancer(std::string sPort) :
 				sPort), sesManager(), loadMonitor(), hashing(sesManager) {
 	rmiTh = boost::thread(&LoadBalancer::runRmiServer, this);
 }
+
+//WR LB
+LoadBalancer::LoadBalancer(std::string cPort, std::string sIp,
+                std::string sPort, timestamp_t tauNew) :
+                 isMaster(true), controlPort(cPort), slaveIp(sIp), slavePort(sPort), sesManager(), loadMonitor(), hashing(
+                sesManager) {
+        //WR
+        sesManager.setSessionTau(tauNew);
+        //WR
+        ctlTh = boost::thread(&LoadBalancer::runCtlServer, this);
+}
+LoadBalancer::LoadBalancer(std::string sPort, timestamp_t tauNew) :
+                isMaster(false), controlPort(""), slaveIp("localHost"), slavePort(
+                                sPort), sesManager(), loadMonitor(), hashing(sesManager) {
+        sesManager.setSessionTau(tauNew);
+        rmiTh = boost::thread(&LoadBalancer::runRmiServer, this);
+}
+// WR End
+
 
 std::string LoadBalancer::readTcpRequest(boost::asio::ip::tcp::socket &sock) {
 	std::stringstream request;
