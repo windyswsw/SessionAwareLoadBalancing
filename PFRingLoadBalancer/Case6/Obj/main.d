@@ -24,6 +24,8 @@ Obj/main.d: main.cpp Common.h /home/sdn/PcapPlusPlus/Dist/header/Packet.h \
  /home/sdn/PcapPlusPlus/Dist/header/PacketUtils.h \
  /home/sdn/PcapPlusPlus/Dist/header/Packet.h \
  /home/sdn/PcapPlusPlus/Dist/header/Logger.h \
+ /home/sdn/PF_RING/userland/lib/pfring.h \
+ /home/sdn/PF_RING/kernel/linux/pf_ring.h \
  /home/sdn/PcapPlusPlus/Dist/header/IPv6Layer.h \
  /home/sdn/PcapPlusPlus/Dist/header/VlanLayer.h \
  /home/sdn/PcapPlusPlus/Dist/header/EthLayer.h \
@@ -88,6 +90,10 @@ PacketMatchingEngine.h:
 /home/sdn/PcapPlusPlus/Dist/header/Packet.h:
 
 /home/sdn/PcapPlusPlus/Dist/header/Logger.h:
+
+/home/sdn/PF_RING/userland/lib/pfring.h:
+
+/home/sdn/PF_RING/kernel/linux/pf_ring.h:
 
 /home/sdn/PcapPlusPlus/Dist/header/IPv6Layer.h:
 

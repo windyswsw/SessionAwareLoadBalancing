@@ -80,6 +80,7 @@ void printHelp(void) {
   printf("-l 		      [Load balancer type: master/slave]\n");
   printf("-s 		      [If Load balancer type is master, then specify Slave IP]\n");
   printf("-d 		      [If Load balancer type is master, then specify Destination IP]\n");
+  printf("-t                  [If Load balancer type is master, then specify session timeout value]\n");
 }
 
 /* ******************************** */
@@ -299,12 +300,13 @@ int main(int argc, char* argv[]) {
     std::string dstIp = "";
     std::string srcIp = "";
     u_int8_t verbose = 0, use_pfring_send = 1;
+    timestamp_t sessionTime = 3000;
     int a_ifindex, b_ifindex;
  // int bind_core = -1;
     u_int16_t watermark = 1;
     char *bpfFilter = NULL;
 
-    while((c = getopt(argc,argv, "hi:o:c:f:vg:w:l:s:d:a:")) != -1) {
+    while((c = getopt(argc,argv, "hi:o:c:f:vg:w:l:s:d:a:t:")) != -1) {
         switch(c) {
           case 'h':
                printHelp();
@@ -337,7 +339,10 @@ int main(int argc, char* argv[]) {
 	      case 'a':
 	        srcIp = optarg;
 	        break;
-    		}
+              case 't':
+                sessionTime = (timestamp_t) atoi(optarg);
+                break;
+    	}
 	}  
 
   	if ((!a_dev) || (!b_dev)) {
@@ -412,7 +417,7 @@ int main(int argc, char* argv[]) {
         if(loadBalancerType.compare("master") == 0){
             loadBalancerType = "master";
             if (slaveIp != ""){
-                LoadBalancer loadBalancer(controlPort, slaveIp, slavePort);
+			LoadBalancer loadBalancer(controlPort, slaveIp, slavePort, sessionTime);
                 boost::this_thread::sleep_for(boost::chrono::seconds(4));
                 cout << "Master load balancer launched." << endl;       // DBG 
                 LB(&loadBalancer,a_ring,b_ring, dstIp, verbose, use_pfring_send, a_ifindex, b_ifindex);        
@@ -422,7 +427,7 @@ int main(int argc, char* argv[]) {
             }
         }
         else{
-            LoadBalancer loadBalancer(slavePort);
+            LoadBalancer loadBalancer(slavePort, sessionTime);
             boost::this_thread::sleep_for(boost::chrono::seconds(4));
             cout << "Slave load balancer launched." << endl;        // DBG
 			loadBalancerType = "slave";

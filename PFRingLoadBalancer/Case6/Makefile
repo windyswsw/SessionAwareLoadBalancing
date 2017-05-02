@@ -38,7 +38,7 @@ PfRingTrafficFilter: create-directories $(OBJS_FILENAMES)
 	@echo uname is: $(UNAME)
 	@echo 'Building target: $@'
 	@echo 'Invoking C++ Linker'
-	$(G++) -DUSE_PF_RING $(PCAPPP_LIBS_DIR) $(PCAPPP_BUILD_FLAGS) -o "./Bin/PfRingTrafficFilter$(BIN_EXT)" $(OBJS_FILENAMES) $(SACH_LIBS)/libsach.a $(PCAPPP_LIBS) -lboost_system -lboost_thread -lboost_chrono
+	$(G++) -DUSE_PF_RING $(PCAPPP_LIBS_DIR) $(PCAPPP_BUILD_FLAGS) -o "./Bin/PfRingTrafficFilter$(BIN_EXT)" $(OBJS_FILENAMES) $(SACH_LIBS)/libsach.a $(PCAPPP_LIBS) -lboost_system -lboost_thread -lboost_chrono -lpcap
 	$(PCAPPP_POST_BUILD)
 	@echo 'Finished successfully building target: $@'
 	@echo ' '
